@@ -47,27 +47,35 @@ Test::LoadAllModules - do use_ok for modules in search path
 
 =head1 SYNOPSIS
 
-  # basic use
+  # basic
   use Test::LoadAllModules;
 
-  all_uses_ok(search_path => 'MyApp');}
+  BEGIN {
+      all_uses_ok(search_path => 'MyApp');
+  }
 
   # exclude some classes
   use Test::LoadAllModules;
 
-  all_uses_ok(
-      search_path => 'MyApp',
-      except => [
-          Some::Dependent::Module,
-          Another::Dependent::Module,
-          ^Yet::Another::Dependent::.*,   # you can use regex
-      ]
-  )
-
+  BEGIN {
+      all_uses_ok(
+          search_path => 'MyApp',
+          except => [
+              MyApp::Role,
+              qr/MyApp::Exclude::.*/,
+          ]
+      );
+  }
 
 =head1 DESCRIPTION
 
-Test::LoadAllModules is 
+Test::LoadAllModules do use_ok for modules in search_path.
+
+=head1 EXPORTED FUNCTIONS
+
+=head2 all_uses_ok
+
+Does Test::More's use_ok() for every modules found in search path.
 
 =head1 AUTHOR
 
