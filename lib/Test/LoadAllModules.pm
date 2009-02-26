@@ -5,7 +5,7 @@ use Module::Pluggable::Object;
 use List::MoreUtils qw(any);
 use Test::More ();
 
-our $VERSION = '0.011';
+our $VERSION = '0.02';
 
 use Exporter;
 our @ISA    = qw/Exporter/;
@@ -19,13 +19,17 @@ sub all_uses_ok {
         exit;
     }
     Test::More::plan('no_plan');
-    my @exceptions = @{$param{except} || []};
-    my $finder
-        = Module::Pluggable::Object->new( search_path => $search_path, );
-    my @modules = ( $search_path, $finder->plugins );
+    my @exceptions = @{ $param{except} || [] };
+    my @lib
+        = @{ $param{lib} || [ 'lib' ] };
     foreach my $class (
         grep { !is_excluded( $_, @exceptions ) }
-        sort @modules
+        sort do {
+            local @INC = @lib;
+            my $finder = Module::Pluggable::Object->new(
+                search_path => $search_path );
+            ( $search_path, $finder->plugins );
+        }
         )
     {
         Test::More::use_ok($class);
@@ -61,8 +65,21 @@ Test::LoadAllModules - do use_ok for modules in search path
       all_uses_ok(
           search_path => 'MyApp',
           except => [
-              MyApp::Role,
+              'MyApp::Role',
               qr/MyApp::Exclude::.*/,
+          ]
+      );
+  }
+
+  # set @INC with lib parm 
+  use Test::LoadAllModules;
+
+  BEGIN {
+      all_uses_ok(
+          search_path => 'MyApp',
+          lib => [
+              'lib',
+              't/lib',
           ]
       );
   }
