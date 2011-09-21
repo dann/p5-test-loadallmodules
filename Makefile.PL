@@ -9,7 +9,6 @@ requires(
 );
 
 test_requires(
-    'FindBin::libs'                => 0,
     'Test::More'                   => 0,
     'File::Spec'                => 0,
     'Module::Install::AuthorTests' => 0,

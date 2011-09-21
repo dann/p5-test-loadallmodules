@@ -1,6 +1,9 @@
 use strict;
 use warnings;
-use FindBin::libs;
+use FindBin;
+use File::Spec;
+use lib File::Spec->catdir($FindBin::Bin, 'lib');
+
 use Test::LoadAllModules;
 
 BEGIN {
