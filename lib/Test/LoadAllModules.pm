@@ -13,6 +13,8 @@ our @EXPORT = qw/all_uses_ok/;
 
 sub all_uses_ok {
     my %param       = @_;
+    my $pre_hook    = (ref($param{pre} ) eq 'CODE');
+    my $post_hook   = (ref($param{post}) eq 'CODE');
     my $search_path = $param{search_path};
     unless ($search_path) {
         Test::More::plan skip_all => 'no search path';
@@ -32,7 +34,9 @@ sub all_uses_ok {
         }
         )
     {
+        $pre_hook and $param{pre}->($class);
         Test::More::use_ok($class);
+        $post_hook and $param{post}->($class);
     }
 }
 
