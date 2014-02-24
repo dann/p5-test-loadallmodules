@@ -1,4 +1,5 @@
 use inc::Module::Install;
+use Module::Install::AuthorTests;
 name 'Test-LoadAllModules';
 all_from 'lib/Test/LoadAllModules.pm';
 
@@ -11,9 +12,11 @@ requires(
 test_requires(
     'Test::More'                   => 0,
     'File::Spec'                => 0,
-    'Module::Install::AuthorTests' => 0,
 );
 
-use_test_base;
-auto_include;
+resources(
+  repository => 'https://github.com/dann/p5-test-loadallmodules',
+);
+
+author_tests('xt');
 WriteAll;
