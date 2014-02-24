@@ -14,5 +14,9 @@ test_requires(
     'File::Spec'                => 0,
 );
 
+resources(
+  repository => 'https://github.com/dann/p5-test-loadallmodules',
+);
+
 author_tests('xt');
 WriteAll;
