@@ -14,6 +14,8 @@ test_requires(
     'Module::Install::AuthorTests' => 0,
 );
 
+repository 'https://github.com/dann/p5-test-loadallmodules';
+
 use_test_base;
 auto_include;
 WriteAll;
